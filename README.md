@@ -10,8 +10,9 @@ The dataset is taken from the [Amazon datasets available online](https://cseweb.
 
 <p>The dataset has both Machine learning and non machine learning attributes where the `overall` column is the target vector with values rating from 1 to 5 indicating the product rating given by the user. Out of these, the reviews with rating 3 are dropped, 5 start and 4 star reviews are grouped as good reviews and 1 start and 2 star reviews are grouped as bad reviews. The final distribution of target vector classes is shown below as a pie chart.</p>
 
-<img src="figs/review_distribution.png" align="center">
-
+<p align="center">
+<img src="figs/review_distribution.png">
+</p>
 ## IDE and Environment
 
 - Programming Language : Python
