@@ -15,7 +15,7 @@ def calc_metrics(y, y_pred):
     
     return accuracy, precision, recall, f1
 
-def get_scores(model, X_train,y_train, X_test, y_test):
+def get_scores(model, X_train,y_train, X_test, y_test, save_name):
     # Make predictions on the training set
     sns.set(style="darkgrid")
 
@@ -84,11 +84,12 @@ def get_scores(model, X_train,y_train, X_test, y_test):
     axes[2].set_title('Receiver Operating Characteristic (ROC) Curve')
     axes[2].legend(loc="lower right")
     
+    plt.savefig(save_name)
     plt.show()
     
     return [accuracy, precision, recall, f1, roc_auc]
     
-def get_roc_auc(y_test, y_pred_proba):
+def get_roc_auc(y_test, y_pred_proba, save_name):
 
     # Calculate the false positive rate, true positive rate, and thresholds
     fpr, tpr, thresholds = roc_curve(y_test, y_pred_proba)
@@ -106,6 +107,7 @@ def get_roc_auc(y_test, y_pred_proba):
     plt.ylabel('True Positive Rate')
     plt.title('Receiver Operating Characteristic (ROC) Curve')
     plt.legend(loc="lower right")
+    plt.savefig(save_name)
     plt.show()
     
     return roc_auc
