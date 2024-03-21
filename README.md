@@ -13,6 +13,7 @@ The dataset is taken from the [Amazon datasets available online](https://cseweb.
 <p align="center">
 <img src="figs/review_distribution.png">
 </p>
+
 ## IDE and Environment
 
 - Programming Language : Python
