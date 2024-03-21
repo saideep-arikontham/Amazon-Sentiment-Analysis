@@ -46,7 +46,7 @@
 
 ## Using CNN
 
-<p>I used Convolutional Neural networks which comprises a 1D convolutional layer with 128 filters and ReLU activation, followed by max pooling. The flattened output is fed into two dense layers with 128 and 64 neurons, respectively, both activated by ReLU, and a final sigmoid output layer for binary classification (either good or bad). The following is the best outcome for CNN with Fasttext. </p>
+<p>I used Convolutional Neural networks which comprises a 1D convolutional layer with 128 filters and ReLU activation, followed by max pooling. The flattened output is fed into two dense layers with 128 and 64 neurons, respectively, both activated by ReLU, and a final sigmoid output layer for binary classification (either good or bad). The following is the best outcome for CNN with Fasttext.</p>
 
 <img src="figs/cnn_fasttext_cm.png">
 
