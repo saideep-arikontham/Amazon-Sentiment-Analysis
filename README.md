@@ -2,13 +2,15 @@
 
 ## Overview
 
-<p>Patient Notes Clustering project is about using the text written by numerous Physicians about 10 different patients. I turned this into an unsupervised machine learning by only considering the physician notes. This natural language processing (NLP) endeavor aims to uncover meaningful patterns and groupings within a dataset of physician notes. By leveraging advanced NLP techniques, we can gain valuable insights into the underlying structure of the data, potentially revealing trends and associations.</p>
+<p>Amazon Sentiment Analysis is a classification task to identify the sentiment of the reviews for products in Amazon. The reviews are grouped to be either good reviews or bad reviews. The review texts are preprocessed using Natural language processing and embeddings are created for each of the reviews using Word2Vec and Fasttext. These embeddings are later used to train a Machine learning model, Convolution Neural Network and Recurrent Neural Networks. The performance of these models are compared to identify the best combination of embeddings and model. </p>
 
 ## About Dataset
 
-<p>The dataset was given as a part of my NLP coursework. The data has 3 columns out of which two prominent features are `case_num` (indicating patient - has 10 unique values representing 10 different patients) and `pn_history` (notes written by physician).</p>
+<p>The dataset is taken from the [Amazon datasets available online](https://cseweb.ucsd.edu/~jmcauley/datasets/amazon/links.html). Out of all those, three different review categories are identified, which are Video games, Patio Lawn & garden and Automotive. These three datasets are merged to build a combined `reviews.csv` dataset which was used for further steps.</p>
 
-<p>The `case_num` is used to compare the clustering plot results. On the `pn_history`, we apply Natural language processing techniques and Unsupervised Machine learning techniques to cluster the `pn_history`.</p>
+<p>The dataset has both Machine learning and non machine learning attributes where the `overall` column is the target vector with values rating from 1 to 5 indicating the product rating given by the user. Out of these, the reviews with rating 3 are dropped, 5 start and 4 star reviews are grouped as good reviews and 1 start and 2 star reviews are grouped as bad reviews. The final distribution of target vector classes is shown below as a pie chart.</p>
+
+<img src="figs/review_distribution.png">
 
 ## IDE and Environment
 
@@ -18,48 +20,54 @@
 
 ## Data Cleaning and Data preprocessing
 
-<p>There are no missing values in the data. As a part of data preprocessing, I first defined list of contractions and medical abbreviations to be replaced. Later, using regular expressions, I have converted the notes text to lower case, removed number, punctuations and special characters and stop words.</p>
-<p>To reduce word to its root form, I compared the results of Lemmatizer and Stemming and decided to use Lemmatization. All these processes are implemented through a function called `preprocess_text`. Later, I have created two new columns, one for original note length and the other for processed text length for visualizations.</p>
+<p>After dropping the non machine learning attributes, missing reviews and perfroming feature engineering the review text is preprocessed using regular expressions, NLTK library while also removing rare words and stop words. There were few reviews without any remaining text after preprocessing which were also dropped. The final preprocessed data is saved as `preprocessed.csv`.</p>
+
+## Embeddings
+
+<p>Using gensim and fasttext library, I created 3 different 100 embeddings using CBOW, Skipgram and Fasttext where each sentence embedding has 100 dimension vectors which are the mean of all the word vectors present in the review. Therefore, we have 3 different embedding dataframes for all the processed reviews.</p>
 
 ## Visualizations
 
-- The following histogram shows us the distribution of note length before and after preprocessing.
+- The following bar plot shows us the words similar to "great" and their respective similarity scores.
 
-<img src="figs/document_length_frequency.png">
+<img src="figs/similar_to_great.png">
 
-- Since we have 10 unique patients, I made the following plot to show the most frequent words in their combined physician notes. We can see that words like `year` are frequent in all the cases.
+- Similarly, the closest words to "worst" are identified and stored in a dataframe with along with the above for each of the 3 different embeddings. The following is just one example of dimension reduced embeddings to plot words using scatter plot.
 
-<img src="figs/common_words_per_patient_case.png">
+<img src="figs/fasttext_word_plot.png">
 
-- The following is a bar plot of top 20 words in all the notes combined irrespective of patient followed
+- Other similar plots can be found in the figs folder.
 
-<img src="figs/common_words_all_notes.png">  
+## Using XGBoost
 
-## Using TFIDF
+<p>I used XGBClassifier on these embeddings with hyperparameter tuning using GridSearchCV while taking advantage of hyperparamters that help for data with imbalanced target classes. The following is the train, test confusion matrix along with ROC AUC curve results for Fasttext embeddings.</p>
 
-<p>I have defined my X (notes) and y (case_num - only to be used for verification). Using my X, I have build a Document Term Matrix (DTM using TFIDF vectorizor. However, instead of using every word occurance, I have filtered the words (which are features in DTM) using `min_df` and `max_df` parameters to remove most and least frequent words. The resulting DTM has 2478 features (prominent words).</p>
+<img src="figs/xgb_fasttext.png">
 
-## Dimensionality Reduction
+## Using CNN
 
-To tackle the curse of dimensionality are make it visualisable, I have tried different dimensionality reduction Techniques like `TruncatedSVD`, `UMAP` and `T-SNE`. The results of UMAP and T-SNE can easily be visualized in 2-Dimensions. 
+<p>I used Convolutional Neural networks which comprises a 1D convolutional layer with 128 filters and ReLU activation, followed by max pooling. The flattened output is fed into two dense layers with 128 and 64 neurons, respectively, both activated by ReLU, and a final sigmoid output layer for binary classification (either good or bad). The following is the best outcome for CNN with Fasttext. </p>
 
-- UMAP (2 Components):
+<img src="figs/cnn_fasttext_cm.png">
 
-<img src="figs/umap_2_component.png"> 
+<img src="figs/cnn_fasttext_roc.png">
 
-- T-SNE (2 Components):
+## Using RNN
 
-<img src="figs/tsne_2components.png"> 
+<p>I used Recurrent Neural networks with an LSTM layer of 128 units, suitable for sequence modeling, followed by a dense layer with 64 neurons activated by ReLU. The architecture concludes with a single neuron dense layer with sigmoid activation, ideal for binary classification (either good or bad). The following is the best model out of all with Fasttext embeddings </p>
+
+<img src="figs/rnn_fasttext_cm.png">
+
+<img src="figs/rnn_fasttext_roc.png">
+
+## Result Analysis
+
+- Taking the best model i.e., RNN with Fasttext embeddings and further analyzing, I observed that the False Positives are not identified as bad reviews because of the fact there there were words like good, better, great appearing more number of times.
 
 
-## Clustering
+<img src="figs/false_positive_wordcloud.png">
 
-- Need to complete
-
-## Results
-
-- Need to complete
-
+- However, for there was no conclusive evidence as to why the false negatives are not being classified good reviews. This final model is the best performing model with an ROC AUC score of 94%.
 
 
 
