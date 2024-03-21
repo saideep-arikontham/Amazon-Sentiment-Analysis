@@ -32,42 +32,57 @@ The dataset is taken from the [Amazon datasets available online](https://cseweb.
 
 - The following bar plot shows us the words similar to "great" and their respective similarity scores.
 
+<p align="center">
 <img src="figs/similar_to_great.png">
+</p>
 
 - Similarly, the closest words to "worst" are identified and stored in a dataframe with along with the above for each of the 3 different embeddings. The following is just one example of dimension reduced embeddings to plot words using scatter plot.
 
+<p align="center">
 <img src="figs/fasttext_word_plot.png">
-
+</p>
+  
 - Other similar plots can be found in the figs folder.
 
 ## Using XGBoost
 
 <p>I used XGBClassifier on these embeddings with hyperparameter tuning using GridSearchCV while taking advantage of hyperparamters that help for data with imbalanced target classes. The following is the train, test confusion matrix along with ROC AUC curve results for Fasttext embeddings.</p>
 
+<p align="center">
 <img src="figs/xgb_fasttext.png">
+</p>
 
 ## Using CNN
 
 <p>I used Convolutional Neural networks which comprises a 1D convolutional layer with 128 filters and ReLU activation, followed by max pooling. The flattened output is fed into two dense layers with 128 and 64 neurons, respectively, both activated by ReLU, and a final sigmoid output layer for binary classification (either good or bad). The following is the best outcome for CNN with Fasttext.</p>
 
+<p align="center">
 <img src="figs/cnn_fasttext_cm.png">
+</p>
 
+<p align="center">
 <img src="figs/cnn_fasttext_roc.png">
+</p>
 
 ## Using RNN
 
 <p>I used Recurrent Neural networks with an LSTM layer of 128 units, suitable for sequence modeling, followed by a dense layer with 64 neurons activated by ReLU. The architecture concludes with a single neuron dense layer with sigmoid activation, ideal for binary classification (either good or bad). The following is the best model out of all with Fasttext embeddings </p>
 
+<p align="center">
 <img src="figs/rnn_fasttext_cm.png">
+</p>
 
+<p align="center">
 <img src="figs/rnn_fasttext_roc.png">
+</p>
 
 ## Result Analysis
 
 - Taking the best model i.e., RNN with Fasttext embeddings and further analyzing, I observed that the False Positives are not identified as bad reviews because of the fact there there were words like good, better, great appearing more number of times.
 
-
+<p align="center">
 <img src="figs/false_positive_wordcloud.png">
+</p>
 
 - However, for there was no conclusive evidence as to why the false negatives are not being classified good reviews. This final model is the best performing model with an ROC AUC score of 94%.
 
