@@ -6,7 +6,7 @@
 
 ## About Dataset
 
-<p>The dataset is taken from the ![Amazon datasets available online](https://cseweb.ucsd.edu/~jmcauley/datasets/amazon/links.html). Out of all those, three different review categories are identified, which are Video games, Patio Lawn & garden and Automotive. These three datasets are merged to build a combined `reviews.csv` dataset which was used for further steps.</p>
+<p>The dataset is taken from the Amazon datasets available online (https://cseweb.ucsd.edu/~jmcauley/datasets/amazon/links.html). Out of all those, three different review categories are identified, which are Video games, Patio Lawn & garden and Automotive. These three datasets are merged to build a combined `reviews.csv` dataset which was used for further steps.</p>
 
 <p>The dataset has both Machine learning and non machine learning attributes where the `overall` column is the target vector with values rating from 1 to 5 indicating the product rating given by the user. Out of these, the reviews with rating 3 are dropped, 5 start and 4 star reviews are grouped as good reviews and 1 start and 2 star reviews are grouped as bad reviews. The final distribution of target vector classes is shown below as a pie chart.</p>
 
